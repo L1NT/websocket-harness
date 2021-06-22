@@ -2,9 +2,9 @@
 import socket,ssl
 import argparse
 import os
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from http.server import BaseHTTPRequestHandler,HTTPServer
 from websocket import create_connection, WebSocket
-from SocketServer import ThreadingMixIn
+from socketserver import ThreadingMixIn
 import threading
 import websocket
 
@@ -39,7 +39,7 @@ def FuzzWebSocket(fuzz_payload):
         fuzz_result =  ws.recv()
         return fuzz_result
     except websocket.WebSocketConnectionClosedException as e:
-        print 'Error:',e.args
+        print('Error:',e.args)
 
 parser = argparse.ArgumentParser(description='Web Socket Harness: Use traditional pentest tools to assess web sockets')
 parser.add_argument('-u','--url', help='The remote WebSocket URL to target. Example: ws://127.0.0.1:8000/method-to-fuzz.', required=True)
@@ -51,12 +51,12 @@ ws = create_connection(args.url,sslopt={"cert_reqs": ssl.CERT_NONE},header={},ht
 try:
     # Setting up web harness/proxy server
     server = ThreadedHTTPServer(('', int(args.port)), WSWebServer)
-    print 'WebSocket Harness: Successful bind on port', args.port
+    print('WebSocket Harness: Successful bind on port', args.port)
     
     # Wait forever for incoming http requests
     server.serve_forever()
 
 except KeyboardInterrupt:
-    print 'WebSocket Harness: Exit command recieved. Shutting down...'
+    print('WebSocket Harness: Exit command recieved. Shutting down...')
     server.socket.close()
     ws.close()
