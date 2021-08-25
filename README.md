@@ -2,7 +2,18 @@ Original project presented at [Derbycon 2019](https://www.irongeek.com/i.php?pag
 
 This python script can be placed between traditional web penetration testing tools and WebSocket connections, which does translation from HTTP to WebSocket and back. Think of it like a fuzzing harness that is used for native code.
 
-Example: .\websocket-harness.py -p 7080 -u wss://echo.websocket.org/
+Setup: this script requires Python 3 and the `websocket-client` module, which can either be installed in your environment or in a virtualenv like so:
+```
+# to create a new virtualenv in the "./venv/" directory
+python -m venv venv
+# install the required module(s)
+pip install -r requirements.txt
+
+# source the virtualenv in each shell before usage
+. venv/bin/activate
+```
+
+Example: `.\websocket-harness.py -p 7080 -u wss://echo.websocket.org/`
 
 In the example above, the WebSocket harness will listen on local loopback and specified port (`127.0.0.1:7080`), and forward any HTTP POST request bodies to the target WebSocket endpoint (wss://echo.websocket.org/).
 
